@@ -8,6 +8,8 @@ import Card from "react-bootstrap/Card";
 import InvoiceItem from "./InvoiceItem";
 import InvoiceModal from "./InvoiceModal";
 import InputGroup from "react-bootstrap/InputGroup";
+import SignaturePad from "./SignaturePad";
+import UploadSignature from "./UploadSignature";
 
 function InvoiceForm(props) {
   const [invoiceLabels, setInvoiceLabels] = useState({
@@ -29,6 +31,7 @@ function InvoiceForm(props) {
     taxAmount: "0.00",
     discountRate: "",
     discountAmount: "0.00",
+    signature: null,
   });
 
   const [invoiceItems, setInvoiceItems] = useState([
@@ -41,13 +44,32 @@ function InvoiceForm(props) {
     },
   ]);
 
-  // componentDidMount(prevProps) {
-  //   handleCalculateTotal()
-  // }
+  const [signatureType, setSignatureType] = useState("Upload Signature");
+
+  const changeSignatureType = (e) => {
+    setSignatureType(e.target.value);
+  };
 
   useEffect(() => {
     handleCalculateTotal(invoiceItems, invoiceLabels);
   }, []);
+
+  const saveSignature = () => {
+    const canvas = document.createElement("canvas");
+    canvas.width = 300;
+    canvas.height = 150;
+    const ctx = canvas.getContext("2d");
+    const image = new Image();
+    image.onload = () => {
+      ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
+      const dataUrl = canvas.toDataURL("image/png");
+      setInvoiceLabels((prevInvoiceLabels) => ({
+        ...prevInvoiceLabels,
+        signature: dataUrl,
+      }));
+    };
+    image.src = document.querySelector("canvas").toDataURL();
+  };
 
   const handleRowDel = (id) => {
     const updatedInvoiceItems = invoiceItems.filter(
@@ -393,6 +415,54 @@ function InvoiceForm(props) {
                 </InputGroup.Text>
               </InputGroup>
             </Form.Group>
+            <Form.Group className="my-3">
+              <Form.Label className="fw-bold">Signature</Form.Label>
+              <Form.Check
+                type="radio"
+                name="Signature"
+                checked={"Upload Signature" === signatureType}
+                value={"Upload Signature"}
+                label={`Upload Signature`}
+                onChange={changeSignatureType}
+                id={`uploadSignature`}
+              />
+              <Form.Check
+                type="radio"
+                name="Signature"
+                checked={"Draw Signature" === signatureType}
+                value={"Draw Signature"}
+                label={`Draw Signature`}
+                onChange={changeSignatureType}
+                id={`drawSignature`}
+              />
+            </Form.Group>
+            {"Draw Signature" === signatureType && (
+              <Form.Group className="my-3">
+                <Form.Label className="fw-bold">
+                  Signature: Draw the signature
+                </Form.Label>
+                <SignaturePad />
+                <button type="button" onClick={saveSignature}>
+                  Save signature
+                </button>
+              </Form.Group>
+            )}
+            {"Upload Signature" === signatureType && (
+              <Form.Group className="my-3" >
+                <Form.Label className="fw-bold">
+                  {" "}
+                  Upload the signature
+                </Form.Label>
+                <UploadSignature
+                  onUpload={(src) =>
+                    setInvoiceLabels((prevInvoiceLabels) => ({
+                      ...prevInvoiceLabels,
+                      signature: src,
+                    }))
+                  }
+                />
+              </Form.Group>
+            )}
           </div>
         </Col>
       </Row>
