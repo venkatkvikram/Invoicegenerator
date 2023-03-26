@@ -1,5 +1,5 @@
 # Invoice Generator using React
-This is a simple invoice generator app built using React. With this app, you can create and save invoices, add line items to your invoices, and view and print your invoices.
+This is a simple invoice generator app built using React. With this app, you can create and save invoices, add line items to your invoices, and view and download your invoices.  Download Invoice as PDFs to your device. Uses [jspdf-react](https://www.npmjs.com/package/jspdf-react) to capture the data from the modal and covert it from canvas -> pdf.
 
 **Installation:**
 
