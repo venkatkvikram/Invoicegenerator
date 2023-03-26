@@ -442,9 +442,9 @@ function InvoiceForm(props) {
                   Signature: Draw the signature
                 </Form.Label>
                 <SignaturePad />
-                <button type="button" onClick={saveSignature}>
+                <Button variant="primary" type="button" className="d-block w-100" onClick={saveSignature}>
                   Save signature
-                </button>
+                </Button>
               </Form.Group>
             )}
             {"Upload Signature" === signatureType && (
