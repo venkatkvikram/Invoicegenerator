@@ -5,12 +5,12 @@ This is a simple invoice generator app built using React. With this app, you can
 
 To install and run this app on your local machine, follow these steps:
 
-Clone this repository: `git clone https://github.com/your-username/invoice-generator-react.git`
+Clone this repository: `https://github.com/venkatkvikram/Invoice-generator.git`
 
 
 Navigate to the project directory: 
 
-`cd invoice-generator-react`
+`cd invoice-generator`
 
 
 Install the dependencies:
